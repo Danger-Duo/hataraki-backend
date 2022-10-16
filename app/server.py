@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from config import CONFIG
-from models.user import User
+from app.config import CONFIG
+from app.models.user import User
 
 app = FastAPI(
     title='Hataraki Backend',

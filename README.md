@@ -24,8 +24,7 @@ make run
 
 # run in production mode
 make install
-source venv/bin/activate
-uvicorn app:app --port 8001
+venv/bin/uvicorn app.server:app --port 8001
 ```
 
 ## API Documentation
