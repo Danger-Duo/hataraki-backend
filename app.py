@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from config import CONFIG
+from models.user import User
 
 app = FastAPI(
     title='Hataraki Backend',
@@ -24,5 +25,5 @@ app.add_middleware(
 async def startup_event():
     # init database connection
     db_client = AsyncIOMotorClient(CONFIG.MONGO_URI)
-    await init_beanie(db_client, document_models=[])
+    await init_beanie(database=db_client.db_name, document_models=[User])
     print('Connected to MongoDB!')
