@@ -2,7 +2,8 @@ from typing import Union
 
 from fastapi import APIRouter, Depends
 
-from app.dtos.joblisting import CreateJobListingReqDto, GetJobListingResDto
+from app.dtos.joblisting import (CreateJobListingReqDto,
+                                 CreateJobListingResDto, GetJobListingResDto)
 from app.models.joblisting import JobListing
 from app.models.user import User
 from app.utils.auth import get_current_user
@@ -25,7 +26,7 @@ async def search_job_listings(title: Union[str, None] = None, company: Union[str
     return await JobListing.find(search_criteria, fetch_links=True).project(GetJobListingResDto).to_list()
 
 
-@router.post("/", response_model=JobListing)
+@router.post("/", response_model=CreateJobListingResDto)
 async def create_job_listing(req_dto: CreateJobListingReqDto, user: User = Depends(get_current_user)):
     """Creates a joblisting"""
     joblisting = JobListing(
