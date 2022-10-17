@@ -29,7 +29,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 async def register_user(register_dto: RegisterReqDto):
     """Registers a new user"""
     # TODO: Add email validation flow
-    user = await User.find_many(User.email == register_dto.email).to_list()
+    user = await User.find_one(User.email == register_dto.email).exists()
     if user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email has already been used")
     hashed_pwd = get_password_hash(register_dto.password)

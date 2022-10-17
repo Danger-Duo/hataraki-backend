@@ -1,3 +1,5 @@
+from typing import Union
+
 from fastapi import APIRouter, Depends
 
 from app.dtos.user import UserResDto
@@ -8,9 +10,14 @@ router = APIRouter(prefix="/api/v1/users", tags=["User"])
 
 
 @router.get("/", response_model=list[UserResDto])
-async def get_all_users():
-    """Returns all users"""
-    return await User.find_all().to_list()
+async def search_users(email: Union[str, None] = None, company: Union[str, None] = None):
+    """Returns all users with optional filters"""
+    search_criteria = {}
+    if email:
+        search_criteria["email"] = email
+    if company:
+        search_criteria["company"] = company
+    return await User.find(search_criteria).to_list()
 
 
 @router.get("/me", response_model=User)

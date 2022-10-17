@@ -6,15 +6,17 @@ from pydantic import BaseModel, Field
 from app.utils.pydantic_object_id import PydanticObjectId
 
 
-class GetJobListingResDto(BaseModel):
-    class CreatedByResDto(BaseModel):
-        id: PydanticObjectId = Field(default_factory=PydanticObjectId, alias="_id")  # type: ignore
-        email: str
-        company: str
+class CreatedByResDto(BaseModel):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId, alias="_id")
+    email: str
+    company: str
 
-        class Settings:
-            projection = {"_id": 1, "company": 1, "email": 1}
+    class Settings:
+        projection = {"_id": 1, "company": 1, "email": 1}
 
+
+class JobListingResDto(BaseModel):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId, alias="_id")
     title: str
     description: str
     location: str
@@ -31,3 +33,11 @@ class CreateJobListingReqDto(BaseModel):
     location: str
     startDate: datetime
     employmentType: str
+
+
+class GetJobListingResDto(JobListingResDto):
+    pass
+
+
+class CreateJobListingResDto(JobListingResDto):
+    pass

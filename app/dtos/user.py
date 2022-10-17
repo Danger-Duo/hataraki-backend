@@ -1,6 +1,8 @@
 from datetime import datetime
 
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
+
+from app.utils.pydantic_object_id import PydanticObjectId
 
 
 class CreateUserReqDto(BaseModel):
@@ -11,6 +13,7 @@ class CreateUserReqDto(BaseModel):
 
 
 class UserResDto(BaseModel):
+    id: PydanticObjectId = Field(default_factory=PydanticObjectId, alias="_id")
     email: EmailStr
     company: str
     roles: list[str]
