@@ -7,17 +7,13 @@ from app.dtos.jobapplication import (GetJobApplicationResDto,
 from app.models.jobapplication import JobApplication
 from app.models.joblisting import JobListing
 
-router = APIRouter(prefix="/api/v1/job-listings/{job_listing_id}/job-applications", tags=["Job Application"])
+router = APIRouter(prefix="/api/v1/job-listings/{job_listing_id}/job-applications", tags=["Job Listing's Application"])
 
 
 @router.get("", response_model=list[GetJobApplicationResDto])
 async def search_job_applications(job_listing_id: PydanticObjectId):
     """Returns all job applications for a job listing"""
-    # TODO: add filter criteria
-    search_criteria = {}
-    if job_listing_id:
-        search_criteria["jobListing._id"] = job_listing_id
-    return await JobApplication.find(search_criteria, fetch_links=True).project(GetJobApplicationResDto).to_list()
+    return await JobApplication.find({"jobListing._id": job_listing_id}, fetch_links=True).project(GetJobApplicationResDto).to_list()
 
 
 @router.post("", response_model=SubmitJobApplicationResDto,
