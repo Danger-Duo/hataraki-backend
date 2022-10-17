@@ -1,8 +1,7 @@
 from datetime import datetime
 
+from beanie.odm.fields import PydanticObjectId
 from pydantic import BaseModel, EmailStr, Field
-
-from app.utils.pydantic_object_id import PydanticObjectId
 
 
 class LoginResDto(BaseModel):
