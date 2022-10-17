@@ -9,7 +9,7 @@ from app.utils.auth import get_current_user
 router = APIRouter(prefix="/api/v1/users", tags=["User"])
 
 
-@router.get("/", response_model=list[UserResDto])
+@router.get("", response_model=list[UserResDto])
 async def search_users(email: Union[str, None] = None, company: Union[str, None] = None):
     """Returns all users with optional filters"""
     search_criteria = {}

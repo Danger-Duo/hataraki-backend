@@ -3,6 +3,7 @@ from datetime import datetime
 from beanie.odm.fields import PydanticObjectId
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
 
+from app.constants.application_status import ApplicationStatus
 from app.models.joblisting import JobListing
 
 
@@ -14,6 +15,7 @@ class JobApplicationResDto(BaseModel):
     startDate: datetime
     resumeLink: HttpUrl
     personalStatement: str
+    applicationStatus: ApplicationStatus
     jobListing: JobListing
     createdAt: datetime
     updatedAt: datetime
@@ -28,9 +30,17 @@ class SubmitJobApplicationReqDto(BaseModel):
     personalStatement: str
 
 
+class UpdateJobApplicationStatusReqDto(BaseModel):
+    applicationStatus: ApplicationStatus
+
+
 class GetJobApplicationResDto(JobApplicationResDto):
     pass
 
 
 class SubmitJobApplicationResDto(JobApplicationResDto):
+    pass
+
+
+class UpdateJobApplicationStatusResDto(JobApplicationResDto):
     pass
