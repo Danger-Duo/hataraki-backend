@@ -11,7 +11,7 @@ class CreateUserReqDto(BaseModel):
 
 
 class UserResDto(BaseModel):
-    email: str
+    email: EmailStr
     company: str
     roles: list[str]
     createdAt: datetime
