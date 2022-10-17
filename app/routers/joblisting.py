@@ -1,5 +1,6 @@
 from typing import Union
 
+from beanie.odm.fields import PydanticObjectId
 from fastapi import APIRouter, Depends, status
 
 from app.dtos.joblisting import (CreateJobListingReqDto,
@@ -12,7 +13,7 @@ router = APIRouter(prefix="/api/v1/job-listings", tags=["Job Listing"])
 
 
 @router.get("", response_model=list[GetJobListingResDto])
-async def search_job_listings(title: Union[str, None] = None, company: Union[str, None] = None, location: Union[str, None] = None, employmentType: Union[str, None] = None):
+async def search_job_listings(title: Union[str, None] = None, company: Union[str, None] = None, location: Union[str, None] = None, employmentType: Union[str, None] = None, createdById: Union[PydanticObjectId, None] = None):
     """Returns all joblistings with optional search query"""
     search_criteria = {}
     if title:
@@ -23,6 +24,8 @@ async def search_job_listings(title: Union[str, None] = None, company: Union[str
         search_criteria["location"] = location
     if employmentType:
         search_criteria["employmentType"] = employmentType
+    if createdById:
+        search_criteria["createdBy._id"] = createdById
     return await JobListing.find(search_criteria, fetch_links=True).project(GetJobListingResDto).to_list()
 
 
