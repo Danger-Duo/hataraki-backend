@@ -11,7 +11,7 @@ from app.models.user import User
 
 JWT_ALGORITHM = "HS256"
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
@@ -23,9 +23,9 @@ def get_password_hash(password: str):
     return pwd_context.hash(password)
 
 
-async def auth_user(username: str, password: str) -> Optional[User]:
-    user = await User.find_one(User.username == username)
-    if not user or verify_password(password, user.password):
+async def auth_user(email: str, password: str) -> Optional[User]:
+    user = await User.find_one(User.email == email)
+    if not user or not verify_password(password, user.password):
         return
     return user
 
@@ -47,12 +47,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     )
     try:
         payload = jwt.decode(token, CONFIG.JWT_SECRET, algorithms=[JWT_ALGORITHM])
-        username = payload.get("sub")
-        if username is None:
+        email = payload.get("sub")
+        if email is None:
             raise credentials_exception
     except JWTError:
         raise credentials_exception
-    user = await User.find_one(User.username == username)
+    user = await User.find_one(User.email == email)
     if not user:
         raise credentials_exception
     return user

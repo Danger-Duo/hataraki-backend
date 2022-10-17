@@ -6,17 +6,15 @@ from pymongo import IndexModel
 
 
 class User(Document):
-    username: str
-    password: str
     email: EmailStr
+    password: str
     company: str
-    role: str
+    roles: list[str] = Field(default=['user'])
     createdAt: datetime = Field(default_factory=datetime.now)
     updatedAt: datetime = Field(default_factory=datetime.now)
 
     class Settings:
         name = "users"
         indexes = [
-            IndexModel("username", unique=True),
             IndexModel("email", unique=True)
         ]

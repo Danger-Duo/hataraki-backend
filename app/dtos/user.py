@@ -4,17 +4,15 @@ from pydantic import BaseModel, EmailStr
 
 
 class CreateUserReqDto(BaseModel):
-    username: str
-    password: str
     email: EmailStr
+    password: str
     company: str
-    role: str
+    roles: list[str]
 
 
 class UserResDto(BaseModel):
-    username: str
     email: str
     company: str
-    role: str
+    roles: list[str]
     createdAt: datetime
     updatedAt: datetime

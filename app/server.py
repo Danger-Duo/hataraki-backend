@@ -6,6 +6,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from app.config import CONFIG
 from app.models.user import User
 from app.routers.auth import router as auth_router
+from app.routers.internal import router as internal_router
 from app.routers.user import router as user_router
 
 app = FastAPI(
@@ -24,6 +25,7 @@ app.add_middleware(
 
 app.include_router(user_router)
 app.include_router(auth_router)
+app.include_router(internal_router)
 
 
 @app.on_event('startup')
