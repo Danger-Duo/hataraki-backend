@@ -1,6 +1,6 @@
 # Hataraki Backend
 
-RESTful API service for Hataraki in Java Spring 5.
+RESTful API service for Hataraki.
 
 ## Pre-requisite Installation
 
@@ -23,9 +23,7 @@ RESTful API service for Hataraki in Java Spring 5.
 make run
 
 # run in production mode
-make install
-source venv/bin/activate
-uvicorn app:app --port 8001
+./bootstrap.sh
 ```
 
 ## API Documentation
