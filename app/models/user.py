@@ -1,13 +1,14 @@
 from datetime import datetime
 
-from beanie import Document, Indexed
+from beanie import Document
 from pydantic import EmailStr, Field
+from pymongo import IndexModel
 
 
 class User(Document):
-    username: Indexed(str, unique=True)  # type: ignore
+    username: str
     password: str
-    email: Indexed(EmailStr, unique=True)  # type: ignore
+    email: EmailStr
     company: str
     role: str
     createdAt: datetime = Field(default_factory=datetime.now)
@@ -15,3 +16,7 @@ class User(Document):
 
     class Settings:
         name = "users"
+        indexes = [
+            IndexModel("username", unique=True),
+            IndexModel("email", unique=True)
+        ]
