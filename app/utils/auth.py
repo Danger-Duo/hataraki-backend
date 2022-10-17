@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta
 from typing import Optional
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.config import CONFIG
+from app.exceptions.invalid_credentials_exception import \
+    InvalidCredentialsException
 from app.models.user import User
 
 JWT_ALGORITHM = "HS256"
@@ -40,19 +42,14 @@ def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid authentication credentials",
-        headers={"WWW-Authenticate": "Bearer"},  # oauth2 standard
-    )
     try:
         payload = jwt.decode(token, CONFIG.JWT_SECRET, algorithms=[JWT_ALGORITHM])
         email = payload.get("sub")
         if email is None:
-            raise credentials_exception
+            raise InvalidCredentialsException()
     except JWTError:
-        raise credentials_exception
+        raise InvalidCredentialsException()
     user = await User.find_one(User.email == email)
     if not user:
-        raise credentials_exception
+        raise InvalidCredentialsException()
     return user
