@@ -4,7 +4,7 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    MONGO_URI: Optional[str] = None
+    MONGO_URI: str
     JWT_SECRET: str  # required field, fails if not set
     ACCESS_TOKEN_EXPIRE_HOURS: int = 24
     S3_BUCKET_NAME: str
