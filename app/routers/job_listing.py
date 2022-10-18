@@ -3,9 +3,9 @@ from typing import Union
 from beanie.odm.fields import PydanticObjectId
 from fastapi import APIRouter, Depends, status
 
-from app.dtos.joblisting import (CreateJobListingReqDto,
-                                 CreateJobListingResDto, GetJobListingResDto)
-from app.models.joblisting import JobListing
+from app.dtos.job_listing import (CreateJobListingReqDto,
+                                  CreateJobListingResDto, GetJobListingResDto)
+from app.models.job_listing import JobListing
 from app.models.user import User
 from app.utils.auth import get_current_user
 

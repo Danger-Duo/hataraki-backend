@@ -1,9 +1,9 @@
 from beanie.odm.fields import PydanticObjectId
 from fastapi import APIRouter, HTTPException
 
-from app.dtos.jobapplication import (UpdateJobApplicationStatusReqDto,
-                                     UpdateJobApplicationStatusResDto)
-from app.models.jobapplication import JobApplication
+from app.dtos.job_application import (UpdateJobApplicationStatusReqDto,
+                                      UpdateJobApplicationStatusResDto)
+from app.models.job_application import JobApplication
 
 router = APIRouter(prefix="/api/v1/job-applications", tags=["Job Application"])
 
