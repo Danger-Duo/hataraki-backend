@@ -1,3 +1,5 @@
+from typing import Union
+
 from beanie.odm.fields import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 
@@ -11,9 +13,13 @@ router = APIRouter(prefix="/api/v1/job-listings/{job_listing_id}/job-application
 
 
 @router.get("", response_model=list[GetJobApplicationResDto])
-async def search_job_applications(job_listing_id: PydanticObjectId):
-    """Returns all job applications for a job listing"""
-    return await JobApplication.find({"jobListing._id": job_listing_id}, fetch_links=True).project(GetJobApplicationResDto).to_list()
+async def search_job_applications(job_listing_id: PydanticObjectId, applicationStatus: Union[str, None] = None):
+    """Returns all job applications for a job listing with optional filtering by application status."""
+    search_criteria: dict[str, Union[str, PydanticObjectId]] = {"jobListing._id": job_listing_id}
+    if applicationStatus:
+        search_criteria["applicationStatus"] = applicationStatus
+
+    return await JobApplication.find(search_criteria, fetch_links=True).project(GetJobApplicationResDto).to_list()
 
 
 @router.post("", response_model=SubmitJobApplicationResDto,

@@ -2,8 +2,9 @@ from datetime import datetime
 
 from beanie import Document, Link
 from pydantic import EmailStr, Field, HttpUrl
-from pymongo import ASCENDING, IndexModel
+from pymongo import IndexModel
 
+from app.constants.application_status import ApplicationStatus
 from app.models.joblisting import JobListing
 
 
@@ -14,6 +15,7 @@ class JobApplication(Document):
     startDate: datetime
     resumeLink: HttpUrl
     personalStatement: str
+    applicationStatus: ApplicationStatus = ApplicationStatus.NEW
     jobListing: Link[JobListing]
     createdAt: datetime = Field(default_factory=datetime.now)
     updatedAt: datetime = Field(default_factory=datetime.now)
@@ -21,5 +23,6 @@ class JobApplication(Document):
     class Settings:
         name = "jobapplications"
         indexes = [
-            IndexModel("jobListing")
+            IndexModel("jobListing"),
+            IndexModel("applicationStatus"),
         ]
