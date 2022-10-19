@@ -13,6 +13,13 @@ s3_client = boto3.client("s3", aws_access_key_id=CONFIG.AWS_ACCESS_KEY_ID,
 
 @router.post("/upload", response_model=UploadPresignedUrlResDto, status_code=status.HTTP_201_CREATED)
 async def generate_upload_presigned_url(req_dto: UploadPresignedUrlReqDto):
+    """
+    Generate presigned URL for uploading file to S3 bucket. 
+    eg. curl command to upload local file sfo.png with generated presigned URL
+    curl --request PUT \
+    --url 'https://hataraki-dev-1.s3.amazonaws.com/sfo.png?AWSAccessKeyId=...&Signature=...&content-type=image%2Fjpg&Expires=1666171105' \
+    -H 'Content-Type: image/jpg' -T sfo.png
+    """
     presigned_url = s3_client.generate_presigned_url(
         ClientMethod="put_object",
         Params={
