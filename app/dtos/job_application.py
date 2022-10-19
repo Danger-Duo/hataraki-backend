@@ -4,7 +4,7 @@ from beanie.odm.fields import PydanticObjectId
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
 
 from app.constants.application_status import ApplicationStatus
-from app.models.joblisting import JobListing
+from app.models.job_listing import JobListing
 
 
 class JobApplicationResDto(BaseModel):

@@ -5,7 +5,7 @@ from pydantic import EmailStr, Field, HttpUrl
 from pymongo import IndexModel
 
 from app.constants.application_status import ApplicationStatus
-from app.models.joblisting import JobListing
+from app.models.job_listing import JobListing
 
 
 class JobApplication(Document):

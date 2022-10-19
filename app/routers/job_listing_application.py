@@ -3,11 +3,11 @@ from typing import Union
 from beanie.odm.fields import PydanticObjectId
 from fastapi import APIRouter, HTTPException, status
 
-from app.dtos.jobapplication import (GetJobApplicationResDto,
-                                     SubmitJobApplicationReqDto,
-                                     SubmitJobApplicationResDto)
-from app.models.jobapplication import JobApplication
-from app.models.joblisting import JobListing
+from app.dtos.job_application import (GetJobApplicationResDto,
+                                      SubmitJobApplicationReqDto,
+                                      SubmitJobApplicationResDto)
+from app.models.job_application import JobApplication
+from app.models.job_listing import JobListing
 
 router = APIRouter(prefix="/api/v1/job-listings/{job_listing_id}/job-applications", tags=["Job Listing's Application"])
 

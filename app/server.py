@@ -4,15 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.config import CONFIG
-from app.models.jobapplication import JobApplication
-from app.models.joblisting import JobListing
+from app.models.job_application import JobApplication
+from app.models.job_listing import JobListing
 from app.models.user import User
 from app.routers.auth import router as auth_router
 from app.routers.internal import router as internal_router
-from app.routers.jobapplication import router as job_application_router
-from app.routers.joblisting import router as job_listing_router
-from app.routers.joblistingapplication import \
+from app.routers.job_application import router as job_application_router
+from app.routers.job_listing import router as job_listing_router
+from app.routers.job_listing_application import \
     router as job_listing_application_router
+from app.routers.presigned_url import router as presigned_url_router
 from app.routers.user import router as user_router
 
 app = FastAPI(
@@ -34,6 +35,7 @@ app.include_router(internal_router)
 app.include_router(job_application_router)
 app.include_router(job_listing_application_router)
 app.include_router(job_listing_router)
+app.include_router(presigned_url_router)
 app.include_router(user_router)
 
 
