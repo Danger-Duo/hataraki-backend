@@ -6,5 +6,13 @@ class UploadPresignedUrlReqDto(BaseModel):
     contentType: str
 
 
-class UploadPresignedUrlResDto(BaseModel):
+class PresignedUrlResDto(BaseModel):
     presignedUrl: str
+
+
+class DownloadPresignedUrlResDto(PresignedUrlResDto):
+    pass
+
+
+class UploadPresignedUrlResDto(PresignedUrlResDto):
+    key: str
