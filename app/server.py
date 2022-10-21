@@ -1,12 +1,9 @@
-import logging
-from logging.config import dictConfig
-
 from beanie import init_beanie
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 
-from app.config import CONFIG, LogConfig
+from app.config import CONFIG
 from app.models.job_application import JobApplication
 from app.models.job_listing import JobListing
 from app.models.user import User
@@ -19,9 +16,7 @@ from app.routers.job_listing_application import \
     router as job_listing_application_router
 from app.routers.presigned_url import router as presigned_url_router
 from app.routers.user import router as user_router
-
-dictConfig(LogConfig().dict())
-logger = logging.getLogger('hataraki-backend')
+from app.utils.logger import logger
 
 app = FastAPI(
     title='Hataraki Backend',

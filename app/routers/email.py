@@ -1,4 +1,4 @@
-import logging
+from logging import Logger
 from fastapi import APIRouter, Depends, HTTPException, status
 import httpx
 
@@ -6,12 +6,13 @@ from app.config import CONFIG
 from app.dtos.email import SendEmailReqDto
 from app.models.user import User
 from app.utils.auth import get_current_user
+from app.utils.logger import get_logger
 
 router = APIRouter(prefix="/email", tags=["Email"])
 
 
 @router.post("")
-async def send_email(req_dto: SendEmailReqDto, user: User = Depends(get_current_user)):
+async def send_email(req_dto: SendEmailReqDto, user: User = Depends(get_current_user), logger: Logger = Depends(get_logger)):
     """
     Send email. User authentication required.
     """
@@ -28,7 +29,7 @@ async def send_email(req_dto: SendEmailReqDto, user: User = Depends(get_current_
             },
         )
     if response.status_code >= status.HTTP_400_BAD_REQUEST:
-        logging.error(response.text)
+        logger.error(response.text)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email failed to send.")
 
-    return {"message": f"Email successfully sent."}
+    return {"message": "Email successfully sent."}
