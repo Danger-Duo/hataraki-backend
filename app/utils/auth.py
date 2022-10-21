@@ -41,6 +41,14 @@ def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes
     return encoded_jwt
 
 
+def create_user_token(user: User) -> str:
+    """Creates a JWT access token for a user"""
+    access_token_expiry = timedelta(hours=CONFIG.ACCESS_TOKEN_EXPIRE_HOURS)
+    return create_access_token(
+        data={"sub": user.email}, expires_delta=access_token_expiry
+    )
+
+
 async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, CONFIG.JWT_SECRET, algorithms=[JWT_ALGORITHM])

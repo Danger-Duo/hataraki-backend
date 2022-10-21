@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     MAILGUN_API_KEY: str
     MAILGUN_DOMAIN_NAME: str
     EMAIL_FROM_ADDR: EmailStr
+    DOMAIN_NAME: str
 
     class Config:
         env_file = ".env"
