@@ -8,7 +8,7 @@ from app.dtos.auth import LoginResDto, RegisterReqDto, RegisterResDto
 from app.exceptions.invalid_credentials_exception import \
     InvalidCredentialsException
 from app.models.user import User
-from app.utils.auth import auth_user, create_access_token, get_password_hash
+from app.utils.auth import auth_user, create_access_token, create_user_token, get_password_hash
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Auth"])
 
@@ -18,11 +18,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     user = await auth_user(form_data.username, form_data.password)
     if not user:
         raise InvalidCredentialsException(detail="Incorrect email or password")
-    access_token_expiry = timedelta(hours=CONFIG.ACCESS_TOKEN_EXPIRE_HOURS)
-    access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expiry
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+    user_token = create_user_token(user)
+    return {"access_token": user_token, "token_type": "bearer"}
 
 
 @router.post("/register", response_model=RegisterResDto, status_code=status.HTTP_201_CREATED)
