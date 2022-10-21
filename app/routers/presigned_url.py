@@ -15,7 +15,7 @@ s3_client = boto3.client("s3", aws_access_key_id=CONFIG.AWS_ACCESS_KEY_ID,
 
 
 @router.get("", response_model=DownloadPresignedUrlResDto)
-async def generate_download_presigned_url(key: str, user: User = Depends(get_current_user)):
+def generate_download_presigned_url(key: str, user: User = Depends(get_current_user)):
     """
     Generate a presigned URL to retrieve a private object. User authentication required.
     """
@@ -35,7 +35,7 @@ async def generate_download_presigned_url(key: str, user: User = Depends(get_cur
 
 
 @router.post("/upload", response_model=UploadPresignedUrlResDto, status_code=status.HTTP_201_CREATED)
-async def generate_upload_presigned_url(req_dto: UploadPresignedUrlReqDto):
+def generate_upload_presigned_url(req_dto: UploadPresignedUrlReqDto):
     """
     Generate presigned URL for uploading file to S3 bucket. Eg curl command to upload local file with generated presigned URL
     curl --request PUT --url 'https://hataraki-dev-1.s3.amazonaws.com/myfile.png?AWSAccessKeyId=...&Signature=...&content-type=image%2Fpng&Expires=1666171105' \
