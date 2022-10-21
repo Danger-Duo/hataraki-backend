@@ -5,5 +5,9 @@
     "120",
     "--experimental"
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.detectIndentation": true,
+  "[python]": {
+    "editor.tabSize": 4
+  }
 }

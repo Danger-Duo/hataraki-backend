@@ -1,11 +1,10 @@
 from logging import Logger
 from fastapi import APIRouter, Depends, HTTPException, status
-import httpx
 
-from app.config import CONFIG
 from app.dtos.email import SendEmailReqDto
 from app.models.user import User
 from app.utils.auth import get_current_user
+from app.utils.email import send_text_email
 from app.utils.logger import get_logger
 
 router = APIRouter(prefix="/email", tags=["Email"])
@@ -16,18 +15,7 @@ async def send_email(req_dto: SendEmailReqDto, user: User = Depends(get_current_
     """
     Send email. User authentication required.
     """
-    # make httpx request
-    async with httpx.AsyncClient() as client:
-        response = await client.post(
-            f"https://api.mailgun.net/v3/{CONFIG.MAILGUN_DOMAIN_NAME}/messages",
-            auth=("api", CONFIG.MAILGUN_API_KEY),
-            data={
-                "from": f"{user.company} <{CONFIG.EMAIL_FROM_ADDR}>",
-                "to": req_dto.to,
-                "subject": req_dto.subject,
-                "text": req_dto.text,
-            },
-        )
+    response = await send_text_email(user.company, req_dto.to, req_dto.subject, req_dto.text)
     if response.status_code >= status.HTTP_400_BAD_REQUEST:
         logger.error(response.text)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email failed to send.")
