@@ -11,7 +11,7 @@ from app.utils.logger import get_logger
 router = APIRouter(prefix="/email", tags=["Email"])
 
 
-@router.post("")
+@router.post("", status_code=status.HTTP_204_NO_CONTENT)
 async def send_email(req_dto: SendEmailReqDto, user: User = Depends(get_current_user), logger: Logger = Depends(get_logger)):
     """
     Send email. User authentication required.
@@ -32,4 +32,4 @@ async def send_email(req_dto: SendEmailReqDto, user: User = Depends(get_current_
         logger.error(response.text)
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email failed to send.")
 
-    return {"message": "Email successfully sent."}
+    return
