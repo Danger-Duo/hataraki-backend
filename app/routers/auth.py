@@ -1,3 +1,4 @@
+from beanie.odm.operators.update.general import Unset
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 from fastapi.security import OAuth2PasswordRequestForm
@@ -52,11 +53,10 @@ async def register_user(register_dto: RegisterReqDto):
 async def confirm_email(token: str):
     """Confirms a user's email"""
     user = await User.find_one(User.registrationToken == token)
-    # TODO: add token expiration logic
-
+    # TODO: add token expiry handling
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Invalid token link")
-    user.registrationToken = None
-    await user.save()
+    # remove registrationToken field from user document
+    await user.update(Unset({"registrationToken": user.registrationToken}))
     # redirect to frontend login page
     return RedirectResponse(url=f"{CONFIG.DOMAIN_NAME}/login", status_code=status.HTTP_302_FOUND)
