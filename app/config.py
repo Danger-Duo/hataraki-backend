@@ -1,6 +1,4 @@
-from typing import Optional
-
-from pydantic import BaseSettings
+from pydantic import BaseSettings, EmailStr
 
 
 class Settings(BaseSettings):
@@ -11,9 +9,41 @@ class Settings(BaseSettings):
     S3_PRESIGNED_URL_EXPIRY_SECONDS: int = 3600
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
+    MAILGUN_API_KEY: str
+    MAILGUN_DOMAIN_NAME: str
+    EMAIL_FROM_ADDR: EmailStr
 
     class Config:
         env_file = ".env"
 
 
 CONFIG = Settings()  # type: ignore
+
+
+class LogConfig(BaseSettings):
+    """Logging configuration to be set for the server"""
+
+    LOGGER_NAME: str = "hataraki-backend"
+    LOG_FORMAT: str = "%(levelprefix)s | %(asctime)s | %(message)s"
+    LOG_LEVEL: str = "INFO"
+
+    # Logging config
+    version = 1
+    disable_existing_loggers = False
+    formatters = {
+        "default": {
+            "()": "uvicorn.logging.DefaultFormatter",
+            "fmt": LOG_FORMAT,
+            "datefmt": "%Y-%m-%dT%H:%M:%S%z",
+        },
+    }
+    handlers = {
+        "default": {
+            "formatter": "default",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stderr",
+        },
+    }
+    loggers = {
+        "hataraki-backend": {"handlers": ["default"], "level": LOG_LEVEL},
+    }
