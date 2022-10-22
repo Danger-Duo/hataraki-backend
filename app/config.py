@@ -1,4 +1,4 @@
-from pydantic import BaseSettings, EmailStr, validator
+from pydantic import BaseSettings, EmailStr
 
 
 class Settings(BaseSettings):
@@ -48,8 +48,3 @@ class LogConfig(BaseSettings):
     loggers = {
         "hataraki-backend": {"handlers": ["default"], "level": LOG_LEVEL},
     }
-
-    #! temp workaround for runtime error
-    @validator("version", pre=True)
-    def parse_version(cls, value):
-        return 1

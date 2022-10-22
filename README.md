@@ -5,7 +5,8 @@ RESTful API service for Hataraki.
 ## Pre-requisite Installation
 
 - Python >= 3.9
-- GNU Make
+- GNU Make (for development)
+- Docker (for production deployment)
 
 ## Recommended tools
 
@@ -24,10 +25,10 @@ RESTful API service for Hataraki.
 # run in development mode
 make run
 
-# run in production mode
+# run in production mode (ensure docker is running)
 ./bootstrap.sh
 ```
 
 ## API Documentation
 
-- [Swagger UI](http://localhost:8001/docs)
+- [Swagger UI](http://hataraki-dev.hellodon.dev/docs)
