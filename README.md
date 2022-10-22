@@ -31,4 +31,4 @@ make run
 
 ## API Documentation
 
-- [Swagger UI](http://hataraki-dev.hellodon.dev/docs)
+- [Swagger UI](https://hataraki-dev.hellodon.dev/docs)
