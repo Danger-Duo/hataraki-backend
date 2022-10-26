@@ -13,6 +13,6 @@ from app.server import app
 @pytest_asyncio.fixture
 async def client():
     db_client = AsyncIOMotorClient(CONFIG.MONGO_URI)
-    await init_beanie(database=db_client.dev, document_models=[JobApplication, JobListing, User])
-    async with AsyncClient(app=app, base_url="http://test") as _client:
-        yield _client
+    await init_beanie(database=db_client.test, document_models=[JobApplication, JobListing, User])
+    async with AsyncClient(app=app, base_url="http://test") as ac:
+        yield ac

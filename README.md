@@ -7,6 +7,7 @@ RESTful API service for Hataraki.
 - Python >= 3.9
 - GNU Make (for development)
 - Docker (for production deployment)
+- Docker Compose (for running tests)
 
 ## Recommended tools
 
@@ -27,6 +28,15 @@ make run
 
 # run in production mode (ensure docker is running)
 ./bootstrap.sh
+```
+
+## Running tests
+
+Docker Compose is required to run tests. A test database is created and destroyed during the test run.
+
+```bash
+# run tests
+make test
 ```
 
 ## API Documentation

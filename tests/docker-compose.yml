@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: 'no'
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: test
+
+  test_app:
+    build: ../
+    restart: 'no'
+    env_file:
+      - ../.env
+    environment:
+      MONGO_URI: mongodb://root:example@mongo:27017/
+    depends_on:
+      - mongo
