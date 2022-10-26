@@ -17,7 +17,7 @@ user_1 = {
 @pytest.fixture(scope='module')
 async def setup_test_user():
     new_user_1 = User(**user_1)  # type: ignore
-    new_user_1.password = get_password_hash(user_1['password'])  # hash password before saving
+    new_user_1.password = get_password_hash(new_user_1.password)
     try:
         await new_user_1.save()
         yield
