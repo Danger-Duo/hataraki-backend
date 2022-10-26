@@ -16,6 +16,7 @@ services:
       context: ../
       dockerfile: Dockerfile
       target: test
+    image: test-hataraki-backend
     restart: 'no'
     env_file:
       - test.env
