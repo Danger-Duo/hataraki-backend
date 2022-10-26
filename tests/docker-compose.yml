@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    restart: 'no'
+    # ports:
+    #   - 27017:27017 # uncomment to expose port publicly
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: test
+
+  test_app:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+      target: test
+    restart: 'no'
+    env_file:
+      - test.env
+    depends_on:
+      - mongo
