@@ -46,9 +46,9 @@ job_application_1 = {
 
 @pytest.fixture(scope='module')
 async def setup_test_job_application():
-    user = User(**user_1)
-    user.password = get_password_hash(user.password)
-    new_job_listing_1 = JobListing(**job_listing_1, createdBy=user)  # type: ignore
+    new_user_1 = User(**user_1)
+    new_user_1.password = get_password_hash(new_user_1.password)
+    new_job_listing_1 = JobListing(**job_listing_1, createdBy=new_user_1)  # type: ignore
     new_job_application_1 = JobApplication(**job_application_1, jobListing=new_job_listing_1)  # type: ignore
     try:
         await new_job_application_1.save(link_rule=WriteRules.WRITE)
