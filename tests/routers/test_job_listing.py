@@ -86,7 +86,7 @@ async def test_create_job_listing_unauthorized(setup_test_job_listing: Generator
     assert response_1.status_code == 401
 
 
-async def test_create_job_listing_authorized(setup_test_job_listing: Generator, client: AsyncClient):
+async def test_create_job_listing_authorized(client: AsyncClient):
     # login
     login_res = await client.post("/api/v1/auth/login", data={"username": user_1.get('email'), "password": user_1.get('password')})
     access_token = login_res.json().get('access_token')
