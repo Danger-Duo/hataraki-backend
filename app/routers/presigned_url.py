@@ -11,7 +11,8 @@ from app.utils.auth import get_current_user
 router = APIRouter(prefix="/api/v1/presigned-url", tags=["Presigned URL"])
 
 s3_client = boto3.client("s3", aws_access_key_id=CONFIG.AWS_ACCESS_KEY_ID,
-                         aws_secret_access_key=CONFIG.AWS_SECRET_ACCESS_KEY)
+                         aws_secret_access_key=CONFIG.AWS_SECRET_ACCESS_KEY,
+                         endpoint_url=CONFIG.S3_ENDPOINT_URL)
 
 
 @router.get("", response_model=DownloadPresignedUrlResDto)

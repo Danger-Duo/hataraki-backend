@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - 27017:27017 # uncomment to expose port publicly
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: dev
+
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - 4566:4566
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - AWS_ACCESS_KEY_ID=local-access
+      - AWS_SECRET_ACCESS_KEY=local-secret
+      - HOSTNAME_EXTERNAL=localstack
+    volumes:
+      - ./.localstack/aws:/docker-entrypoint-initaws.d
+
+  local_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    image: local-hataraki-backend
+    ports:
+      - 8001:8001
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+      - localstack

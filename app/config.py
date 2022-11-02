@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseSettings, EmailStr
 
 
@@ -7,6 +9,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_HOURS: int = 24
     S3_BUCKET_NAME: str
     S3_PRESIGNED_URL_EXPIRY_SECONDS: int = 3600
+    S3_ENDPOINT_URL: Optional[str] = None
     AWS_ACCESS_KEY_ID: str
     AWS_SECRET_ACCESS_KEY: str
     MAILGUN_API_KEY: str
