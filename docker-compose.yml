@@ -29,7 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
-    image: local-hataraki-backend
+    image: hataraki-backend
     ports:
       - 8001:8001
     env_file:
