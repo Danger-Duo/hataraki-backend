@@ -1,9 +1,8 @@
-from httpx import AsyncClient
-from beanie import WriteRules
-
 import pytest
-from app.constants.application_status import ApplicationStatus
+from beanie import WriteRules
+from httpx import AsyncClient
 
+from app.constants.application_status import ApplicationStatus
 from app.models.job_application import JobApplication
 from app.models.job_listing import JobListing
 from app.models.user import User

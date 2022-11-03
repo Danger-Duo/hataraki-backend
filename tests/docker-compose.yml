@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: test
 
-  test_localstack:
+  test-localstack:
     image: localstack/localstack:latest
     ports:
       - 4566:4566
@@ -20,7 +20,7 @@ services:
       - DOCKER_HOST=unix:///var/run/docker.sock
       - AWS_ACCESS_KEY_ID=local-access
       - AWS_SECRET_ACCESS_KEY=local-secret
-      - HOSTNAME_EXTERNAL=localstack
+      - HOSTNAME_EXTERNAL=test-localstack
     volumes:
       - ../.localstack/aws:/docker-entrypoint-initaws.d
 
@@ -34,4 +34,4 @@ services:
       - test.env
     depends_on:
       - test_mongo
-      - test_localstack
+      - test-localstack
