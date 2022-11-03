@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  test_mongo:
+  test-mongo:
     image: mongo:latest
     # ports:
     #   - 27017:27017 # uncomment to expose port publicly
@@ -11,7 +11,7 @@ services:
       MONGO_INITDB_DATABASE: test
 
   test-localstack:
-    image: localstack/localstack:latest
+    image: localstack/localstack:1.2
     ports:
       - 4566:4566
     environment:
@@ -21,10 +21,8 @@ services:
       - AWS_ACCESS_KEY_ID=local-access
       - AWS_SECRET_ACCESS_KEY=local-secret
       - HOSTNAME_EXTERNAL=test-localstack
-    volumes:
-      - ../.localstack/aws:/docker-entrypoint-initaws.d
 
-  test_app:
+  test-app:
     build:
       context: ../
       dockerfile: Dockerfile
@@ -33,5 +31,5 @@ services:
     env_file:
       - test.env
     depends_on:
-      - test_mongo
+      - test-mongo
       - test-localstack

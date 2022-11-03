@@ -13,8 +13,8 @@ $(VENV)/activate: requirements.txt
 install: ./$(VENV)/activate
 
 test-app:
-	docker compose -f tests/docker-compose.yml build test_app -q
-	docker compose -f tests/docker-compose.yml run --rm test_app pytest -v -k test_generate_download_presigned_url
+	docker compose -f tests/docker-compose.yml build test-app -q
+	docker compose -f tests/docker-compose.yml run --rm test-app pytest -s -v -k test_generate_upload_presigned_url_valid
 	docker compose -f tests/docker-compose.yml down -v
 
 clean:
