@@ -1,8 +1,8 @@
-from httpx import AsyncClient
 from typing import Generator
-from beanie import WriteRules
 
 import pytest
+from beanie import WriteRules
+from httpx import AsyncClient
 
 from app.models.job_listing import JobListing
 from app.models.user import User

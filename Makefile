@@ -12,10 +12,10 @@ $(VENV)/activate: requirements.txt
 
 install: ./$(VENV)/activate
 
-test-app: 
-	docker compose -f tests/docker-compose.yml build test_app -q
-	docker compose -f tests/docker-compose.yml run --rm --quiet-pull test_app pytest -v
-	docker compose -f tests/docker-compose.yml down
+test-app:
+	docker compose -f tests/docker-compose.yml build test-app -q
+	docker compose -f tests/docker-compose.yml run --rm test-app pytest -s -v || true
+	docker compose -f tests/docker-compose.yml down -v
 
 clean:
 	rm -rf __pycache__
