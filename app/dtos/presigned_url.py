@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 class UploadPresignedUrlReqDto(BaseModel):
     key: str
-    contentType: str
 
 
 class PresignedUrlResDto(BaseModel):
@@ -15,4 +14,4 @@ class DownloadPresignedUrlResDto(PresignedUrlResDto):
 
 
 class UploadPresignedUrlResDto(PresignedUrlResDto):
-    key: str
+    fields: dict

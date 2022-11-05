@@ -36,28 +36,24 @@ def generate_download_presigned_url(key: str, user: User = Depends(get_current_u
 @router.post("/upload", response_model=UploadPresignedUrlResDto, status_code=status.HTTP_201_CREATED)
 def generate_upload_presigned_url(req_dto: UploadPresignedUrlReqDto):
     """
-    Generate presigned URL for uploading file to S3 bucket. Eg curl command to upload local file with generated presigned URL
-    curl --request PUT --url 'https://hataraki-dev-1.s3.amazonaws.com/myfile.png?AWSAccessKeyId=...&Signature=...&content-type=image%2Fpng&Expires=1666171105' \
-    -H 'Content-Type: image/png' -T myfile.png
+    Generate presigned URL for uploading file to S3 bucket. Eg python request to upload using response from this endpoint:
+    response_2 = requests.post(presigned_url, files={'file': (
+        'file1.txt', open('file1.txt', 'rb'))}, data=fields)
     """
     # check if key exist in s3
     if check_key_exist_in_s3(req_dto.key):
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Object already exist")
 
     try:
-        presigned_url = s3_client.generate_presigned_url(
-            ClientMethod="put_object",
-            Params={
-                "Bucket": CONFIG.S3_BUCKET_NAME,
-                "Key": req_dto.key,
-                "ContentType": req_dto.contentType,
-            },
+        presigned_url = s3_client.generate_presigned_post(
+            Bucket=CONFIG.S3_BUCKET_NAME,
+            Key=req_dto.key,
             ExpiresIn=CONFIG.S3_PRESIGNED_URL_EXPIRY_SECONDS,
         )
     except s3_client.exceptions.ClientError as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
-    return {"presignedUrl": presigned_url, "key": req_dto.key}
+    return {"presignedUrl": presigned_url.get('url'), "fields": presigned_url.get('fields')}
 
 
 def check_key_exist_in_s3(key):

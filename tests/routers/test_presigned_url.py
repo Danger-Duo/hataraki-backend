@@ -1,5 +1,6 @@
 import boto3
 import pytest
+import requests
 from beanie import WriteRules
 from httpx import AsyncClient
 
@@ -45,11 +46,11 @@ async def setup_test_presigned_url(s3_client):
         # delete object
         s3_client.delete_object(Bucket=CONFIG.S3_BUCKET_NAME, Key=test_object_key_1)
 
-        # delete bucket
-        s3_client.delete_bucket(Bucket=CONFIG.S3_BUCKET_NAME)
-
         # delete user
         await User.delete_all()
+
+        # delete bucket
+        s3_client.delete_bucket(Bucket=CONFIG.S3_BUCKET_NAME)
 
 
 async def test_generate_download_presigned_url(setup_test_presigned_url, client: AsyncClient):
@@ -72,27 +73,23 @@ async def test_generate_upload_presigned_url_key_exists(setup_test_presigned_url
 
 async def test_generate_upload_presigned_url_missing_content_type(setup_test_presigned_url, client: AsyncClient):
     # generate presigned url
-    response = await client.post(f'/api/v1/presigned-url/upload', json={"key": test_object_key_1})
+    response = await client.post(f'/api/v1/presigned-url/upload', json={'invalidKey': 'invalidVal'})
     assert response.status_code == 422
 
 
-async def test_generate_upload_presigned_url_valid(setup_test_presigned_url, client: AsyncClient):
+async def test_generate_upload_presigned_url_valid(setup_test_presigned_url, s3_client, client: AsyncClient):
     # generate presigned url
-    response = await client.post(f'/api/v1/presigned-url/upload', json={"key": 'test2.txt', "contentType": "text/plain"})
+    response = await client.post(f'/api/v1/presigned-url/upload', json={'key': 'requirements.txt'})
     assert response.status_code == 201
     presigned_url = response.json().get('presignedUrl')
+    fields = response.json().get('fields')
     assert presigned_url is not None
+    assert fields is not None
+    try:
+        # use requests lib instead as httpx does not work
+        response_2 = requests.post(presigned_url, files={'file': (
+            'requirements.txt', open('requirements.txt', 'rb'))}, data=fields)
+    finally:
+        s3_client.delete_object(Bucket=CONFIG.S3_BUCKET_NAME, Key='requirements.txt')
 
-    # TODO: refactor after changing to presigned post url
-    # create plaintext file 'test2.txt' locally
-    # with open('test2.txt', 'wb+') as f:
-    #     f.write(b'test abc\n')
-
-    # response_2 = await client.put(presigned_url, data="test abc\n", headers={"Content-Type": "text/plain"})
-
-    # print response_2 error
-    # print(response_2.request.url)
-    # print(response_2.request.headers)
-    # print(response_2.request._content)
-    # print(response_2.json())
-    # assert response_2.status_code == 200
+    assert response_2.status_code == 204
