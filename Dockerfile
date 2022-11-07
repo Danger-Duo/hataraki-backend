@@ -3,9 +3,9 @@ FROM python:3.9-slim AS base
 
 WORKDIR /code
 
-COPY ./requirements.txt /code/requirements.txt
-
 RUN pip install --upgrade pip
+
+COPY ./requirements.txt /code/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
@@ -19,8 +19,6 @@ FROM base AS test
 WORKDIR /code
 
 COPY tests/requirements.txt /code/tests/requirements.txt
-
-RUN pip install --upgrade pip 
 
 RUN pip install --no-cache-dir --upgrade -r /code/tests/requirements.txt
 
