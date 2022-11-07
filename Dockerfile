@@ -5,6 +5,8 @@ WORKDIR /code
 
 COPY ./requirements.txt /code/requirements.txt
 
+RUN pip install --upgrade pip
+
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 COPY ./app /code/app
@@ -17,6 +19,8 @@ FROM base AS test
 WORKDIR /code
 
 COPY tests/requirements.txt /code/tests/requirements.txt
+
+RUN pip install --upgrade pip 
 
 RUN pip install --no-cache-dir --upgrade -r /code/tests/requirements.txt
 
